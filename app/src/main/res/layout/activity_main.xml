@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+   <data>
+       <import type="android.view.View"/>
+       <variable
+           name="presenter"
+           type="com.github.vinci.testdemo.MainPresenter"/>
+   </data>
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,6 +18,7 @@
         android:layout_width="match_parent">
 
         <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_height="?attr/actionBarSize"
             android:layout_width="match_parent"
             app:layout_scrollFlags="scroll|enterAlways"/>
@@ -22,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_scrollFlags="scroll|enterAlways"
+        android:background="@color/colorPrimary"
         android:layout_alignParentBottom="true"
         app:tabMode="fixed"
         app:tabIndicatorColor="@android:color/transparent">
@@ -36,10 +45,13 @@
             android:layout_width="wrap_content"
             android:text="发现" />
     </android.support.design.widget.TabLayout>
-    <FrameLayout
-        android:id="@+id/container"
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/appbar"
         android:layout_above="@id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        />
 </RelativeLayout>
+</layout>
