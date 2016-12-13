@@ -55,6 +55,7 @@ public class MessageGridAdapter extends BaseAdapter {
         if(path != null){
             paths.add(path);
             notifyDataSetChanged();
+            Log.i("gridAdapter","notify data set change, "+path);
         }
     }
     @Override
@@ -80,6 +81,7 @@ public class MessageGridAdapter extends BaseAdapter {
                 }
             }
         });
+        viewHolder.imageView.setImageBitmap(bitmap);
         return view;
     }
     public static class ViewHolder{

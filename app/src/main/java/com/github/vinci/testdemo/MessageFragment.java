@@ -78,6 +78,13 @@ public class MessageFragment extends Fragment {
                 }
                 break;
             case OPEN_GALLERY_CODE:
+                List<String> paths = data.getStringArrayListExtra("paths");
+                for(String s : paths){
+                    Log.i(TAG,"path : "+s);
+                    if(s != null){
+                        addPic(s);
+                    }
+                }
                 break;
         }
     }

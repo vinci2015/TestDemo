@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -22,14 +23,20 @@ class ImageDetailAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private String[] datas;
     private GridView mGridView;
+    private ChosenPathListener listener;
 
-    public ImageDetailAdapter(Context context, String[]datas, GridView mGridView) {
+    public ImageDetailAdapter(Context context, String[]datas, GridView mGridView,ChosenPathListener listener) {
         this.datas = datas;
         this.mGridView = mGridView;
         this.inflater = LayoutInflater.from(context);
         point = new Point(150,150);
+        this.listener = listener;
     }
 
+    public interface ChosenPathListener{
+        void chooseImg(String path);
+        void cancelChoosen(String path);
+    }
     @Override
     public int getCount() {
         return datas.length;
@@ -48,7 +55,7 @@ class ImageDetailAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         final ViewHolder viewHolder ;
-        String path = datas[i];
+        final String path = datas[i];
         if(view == null){
             viewHolder = new ViewHolder();
             view = this.inflater.inflate(R.layout.item_image,viewGroup,false);
@@ -59,6 +66,16 @@ class ImageDetailAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
         viewHolder.imageView.setTag(path);
+        viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    listener.chooseImg(path);
+                }else{
+                    listener.cancelChoosen(path);
+                }
+            }
+        });
         Bitmap bitmap = MyImageLoader.getInstance().loadNativeImage(path, point, new MyImageLoader.MyImageCallBack() {
             @Override
             public void onImageLoader(Bitmap bitmap, String path) {

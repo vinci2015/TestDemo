@@ -3,6 +3,7 @@ package com.github.vinci.testdemo;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.github.vinci.testdemo.databinding.ActivityAlbumBinding;
 import com.github.vinci.testdemo.utils.MyImageLoader;
 
 import java.io.File;
@@ -28,7 +30,7 @@ public class AlbumActivity extends AppCompatActivity {
     private List<ImageBean> list = new ArrayList<ImageBean>();
     private final static int SCAN_OK = 1;
     private ImageAdapter adapter;
-    private GridView mGroupGridView;
+    private ActivityAlbumBinding binding;
     private Handler mHandler = new Handler(){
 
         @Override
@@ -37,8 +39,8 @@ public class AlbumActivity extends AppCompatActivity {
             switch (msg.what) {
                 case SCAN_OK:
 
-                    adapter = new ImageAdapter(AlbumActivity.this, list = subGroupOfImage(mGruopMap), mGroupGridView);
-                    mGroupGridView.setAdapter(adapter);
+                    adapter = new ImageAdapter(AlbumActivity.this, list = subGroupOfImage(mGruopMap), binding.grid);
+                    binding.grid.setAdapter(adapter);
                     break;
             }
         }
@@ -47,10 +49,9 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_album);
-        mGroupGridView = (GridView) findViewById(R.id.grid);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_album);
         getImages();
-        mGroupGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MyImageLoader.getInstance().clear();
@@ -68,8 +69,9 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RESULT_OK){
-            setResult(1);
+        if(resultCode == RESULT_OK){
+
+            setResult(1,data);
             finish();
         }
     }
